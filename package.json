@@ -9,10 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "\u0016https://github.com/MosesSupposes/Naming-Contest.git"
+    "url": "https://github.com/MosesSupposes/Naming-Contest.git"
   },
   "author": "Moses A. Samuel",
   "license": "GPL-3.0",
+  "bugs": "https://github.com/MosesSupposes/Naming-Contest.git/issues",
+  "homepage": "https://github.com/MosesSupposes/Naming-Contest.git#readme",
   "dependencies": {
     "ejs": "^2.5.6",
     "express": "^4.14.1",
