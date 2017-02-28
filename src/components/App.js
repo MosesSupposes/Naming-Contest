@@ -8,6 +8,9 @@ const pushState = (obj, url) => {
     window.history.pushState(obj, '', url);
 };
 
+const onPopState = handler => 
+    window.onpopstate = handler;
+
 class App extends Component { 
     static propTypes = {
         initialData: React.PropTypes.object.isRequired
@@ -16,7 +19,15 @@ class App extends Component {
     state = this.props.initialData;
 
     componentDidMount() {
-   
+        onPopState(e => {
+            this.setState({
+                currentContestId: (e.state || {}).currentContestId
+            });
+        });
+    }
+
+    componentWillUnmount() {
+        onPopState(null);
     }
 
     fetchContest = (contestId) => {
@@ -24,7 +35,8 @@ class App extends Component {
             { currentContestId: contestId },
             `/contest/${contestId}`
         );
-        api.fetchContest(contestId).then(contest => {
+        api.fetchContest(contestId)
+        .then(contest => {
             this.setState({
                 currentContestId: contest.id,
                 contests: {
@@ -34,18 +46,20 @@ class App extends Component {
             });
         });
     }
+
     fetchContestList = () => {
         pushState(
             { currentContestId: null },
-            `/`
+            '/'
         );
-        api.fetchContestList().then(contests => {
+        api.fetchContestList()
+        .then(contests => {
             this.setState({
                 currentContestId: null,
                 contests
             });
         });
-    }
+    };
 
     currentContest() {
         return this.state.contests[this.state.currentContestId];
@@ -54,9 +68,8 @@ class App extends Component {
     pageHeader() {
         if (this.state.currentContestId) {
             return this.currentContest().contestName;
-        } else {
-            return 'Naming Contests';
-        }
+        } 
+        return 'Naming Contests';
     }
     
     currentContent() {
